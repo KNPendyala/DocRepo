@@ -1,0 +1,44 @@
+Sub Duplicate_Mover()
+    Dim wsMain As Worksheet, wsOutput As Worksheet
+    Dim lRowColA As Long, lRowColB As Long, i As Long, j As Long
+    Dim aCell As Range, ColARng As Range, ColBRng As Range
+
+    '~~> Set input Sheet and output sheet
+    Set wsMain = ThisWorkbook.Sheets("Main")
+    Set wsOutput = ThisWorkbook.Sheets("Duplicates")
+
+    '~~> Required Parameters
+    k = 2
+    
+    '~~> Get Last Row & Last Column Values Based on Column-A and Row-1.
+    lRowColA = wsMain.Range("A" & wsMain.Rows.Count).End(xlUp).Row
+    lColumn = wsMain.Cells(1, Columns.Count).End(xlToLeft).Column
+    
+    
+    For i = 2 To lRowColA
+        For iloop = i + 1 To lRowColA
+            For j = 1 To lColumn
+            
+                If Cells(i, j).Value = Cells(iloop, j).Value Then
+                    
+                    If j = lColumn Then
+                    
+                        Worksheets("Main").Rows(iloop).Cut Worksheets("Duplicates").Rows(k) 'Cut
+                        k = k + 1
+                        Worksheets("Main").Rows(iloop).Delete
+                        lRowColA = lRowColA - 1
+                        iloop = iloop - 1
+                        
+                    Exit For
+                    End If
+                    
+                Else
+                Exit For
+                End If
+            
+            Next
+        Next
+    Next
+    
+    
+End Sub
